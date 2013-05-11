@@ -5,57 +5,55 @@ document.addEventListener("deviceready", onDeviceReady, false);
 
 // PhoneGap is ready
 function onDeviceReady() {
-    getLocation();
-    navigator.splashscreen.hide();
+	navigator.splashscreen.hide();
 }
 
-function getLocation() {
-    navigator.geolocation.getCurrentPosition(onGeolocationSuccess, onGeolocationError);
-}
+function doClick() {
+    //
+	//////////////////////////////////////////////////////////////////
+	// CREATE VARIOUS OBJECT TYPES
+    //////////////////////////////////////////////////////////////////
+    
+	// DOM object representing <div>
+	var domObject = document.getElementById("divSample");
+    
+	// JQuery object representing <div>
+	var jqueryObject = $("#divSample");
+    
+	// return from function to create a kendo ListView object on <div>
+	var kendoObjectCreated = $("#divSample").kendoMobileListView({
+		// create options go here
+	});
+    
+	// retreiving kendo ListView object from data-* attribute on <div>
+	var kendoObjectRetrieved = $("#divSample").data("kendoMobileListView");
+    
+    //
+	//////////////////////////////////////////////////////////////////
+	// TESTS
+    //////////////////////////////////////////////////////////////////
+    
+	// 1
+	console.log((domObject === jqueryObject) ? "1) TRUE" : "1) FALSE");
+    
+	// 2
+	console.log((kendoObjectCreated === kendoObjectRetrieved) ? "2) TRUE" :"2) FALSE");
+    
+	// 3
+	console.log((kendoObjectCreated.data("kendoMobileListView") === kendoObjectRetrieved) ? "3) TRUE" :"3) FALSE");
 
-//=======================Say Hello (Page 1) Operations=======================//
-function sayHello() {
-    var sayHelloInputElem = document.getElementById('helloWorldInput');
-    var sayHelloTextElem = document.getElementById('helloWorldText');
-    var inputText = document.getElementById('txtName');
+	// 4
+	console.log((jqueryObject == kendoObjectRetrieved.element) ? "4) TRUE" :"4) FALSE");
+    
+	// 5
+	console.log(jqueryObject.is(kendoObjectRetrieved.element) ? "5) TRUE" :"5) FALSE");
 
-    sayHelloTextElem.innerHTML = 'Hello, ' + inputText.value + '!';
-    sayHelloTextElem.style.display = 'block';
-    sayHelloInputElem.style.display = 'none';
-}
-
-function sayHelloReset() {
-    var sayHelloInputElem = document.getElementById('helloWorldInput');
-    var sayHelloTextElem = document.getElementById('helloWorldText');
-    var inputText = document.getElementById('txtName');
-
-    inputText.value = '';
-    sayHelloTextElem.style.display = 'none';
-    sayHelloInputElem.style.display = 'block';
-}
-
-//=======================Geolocation Operations=======================//
-// onGeolocationSuccess Geolocation
-function onGeolocationSuccess(position) {
-    // Use Google API to get the location data for the current coordinates
-    var geocoder = new google.maps.Geocoder();
-    var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-    geocoder.geocode({ "latLng": latlng }, function (results, status) {
-        if (status == google.maps.GeocoderStatus.OK) {
-            if ((results.length > 1) && results[1]) {
-                $("#myLocation").html(results[1].formatted_address);
-            }
-        }
-    });
-
-    // Use Google API to get a map of the current location
-    // http://maps.googleapis.com/maps/api/staticmap?size=280x300&maptype=hybrid&zoom=16&markers=size:mid%7Ccolor:red%7C42.375022,-71.273729&sensor=true
-    var googleApis_map_Url = 'http://maps.googleapis.com/maps/api/staticmap?size=300x300&maptype=hybrid&zoom=16&sensor=true&markers=size:mid%7Ccolor:red%7C' + latlng;
-    var mapImg = '<img src="' + googleApis_map_Url + '" />';
-    $("#map_canvas").html(mapImg);
-}
-
-// onGeolocationError Callback receives a PositionError object
-function onGeolocationError(error) {
-    $("#myLocation").html("<span class='err'>" + error.message + "</span>");
+	// 6
+	console.log((jqueryObject.is(domObject)) ? "6) TRUE" :"6) FALSE");
+    
+	// 7
+	console.log((jqueryObject[0] === domObject) ? "7) TRUE" :"7) FALSE");
+    
+	// 8
+	console.log(jqueryObject.is(kendoObjectRetrieved) ? "8) TRUE" :"8) FALSE");
 }
